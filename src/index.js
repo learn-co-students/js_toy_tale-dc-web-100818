@@ -89,8 +89,8 @@ function addLike(event) {
   event.preventDefault();
   let toyDataId = event.target.dataset.id
   let curLikes = parseInt(event.target.parentElement.querySelector('p').innerText);
-debugger
   let data = { likes: curLikes + 1}
+  curLikes += 1;
 
   event.target.parentElement.querySelector('p').innerText = `${curLikes + 1}`
 

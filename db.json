@@ -4,7 +4,7 @@
       "id": 1,
       "name": "Woody",
       "image": "http://www.pngmart.com/files/3/Toy-Story-Woody-PNG-Photos.png",
-      "likes": 8
+      "likes": 2
     },
     {
       "id": 2,
@@ -46,18 +46,18 @@
       "id": 8,
       "name": "Little Green Men",
       "image": "http://www.pngmart.com/files/3/Toy-Story-Alien-PNG-File.png",
-      "likes": -2
+      "likes": 14
     },
     {
       "name": "Hank",
       "image": "https://vignette.wikia.nocookie.net/kingofthehill/images/c/c4/Hank_Hill.png/revision/latest?cb=20140504043948",
-      "likes": 0,
+      "likes": 2,
       "id": 9
     },
     {
       "name": "Hank",
       "image": "https://vignette.wikia.nocookie.net/kingofthehill/images/c/c4/Hank_Hill.png/revision/latest?cb=20140504043948",
-      "likes": 0,
+      "likes": 6,
       "id": 10
     },
     {
