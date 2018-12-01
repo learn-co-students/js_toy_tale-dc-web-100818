@@ -15,97 +15,88 @@ addBtn.addEventListener('click', () => {
   }
 })
 
-
 // OR HERE!
-document.addEventListener("DOMContentLoaded", function () {
-  fetchAllToys()
-  getForm().addEventListener('submit', addNewToy)
+document.addEventListener("DOMContentLoaded", function() {
+  fetchToys()
+  getToyForm().addEventListener('submit', addNewToy)
 })
 
-function fetchAllToys() {
+function fetchToys() {
   fetch('http://localhost:3000/toys')
-    .then(response => response.json())
-    .then(data =>
-      {data.forEach(toy => renderToys(toy))}
-    )}
-
-function postFetch(name, image) {
-  let data = {
-    name: name,
-    image: image,
-    likes: 0
-    }
-    fetch('http://localhost:3000/toys', {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .then(data => {renderToys(data)})
-  }
-
-function updateLikes(event) {
-  let toyId = event.target.dataset.id
-  let currentToyLikes = parseInt(event.currentTarget.dataset.likes)
-  let data = {
-    likes: currentToyLikes + 1,
-    }
-
-  fetch(`http://localhost:3000/toys/${toyId}`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json"
-      },
-    body: JSON.stringify(data)
-    })
-      .then(res => res.json())
-      .then(data => {
-        event.target.parentElement.querySelector('h4').innerText = `${currentToyLikes + 1} Likes`
-        event.target.dataset.likes = currentToyLikes + 1
-      })
-    }
-
-function addNewToy(event) {
-  event.preventDefault()
-  let name = document.querySelector('.name-input').value
-  let image = document.querySelector('.image-input').value
-  postFetch(name, image)
+  .then(response => response.json())
+  .then(data => data.forEach(renderToy))
 }
 
-function renderToys(toy){
+function renderToy(toy) {
   let toyCard = document.createElement('div')
-  toyCard.classList.add('card')
+  toyCard.className = 'card'
+  toyCard.dataset.id = toy.id
 
   let toyName = document.createElement('h2')
   toyName.innerText = toy.name
 
   let toyImage = document.createElement('img')
-  toyImage.className = ('toy-avatar')
+  toyImage.className = 'toy-avatar'
   toyImage.src = toy.image
 
-  let toyLikes = document.createElement('h4')
-  toyLikes.innerText = `${toy.likes} likes`
+  let toyLikes = document.createElement('p')
+  toyLikes.innerText = `${toy.likes} Likes`
 
-  let likeButton = document.createElement('button')
-  likeButton.innerText = 'I like this toy!'
-  likeButton.className = ('like-button')
-  likeButton.dataset.id = toy.id
-  likeButton.dataset.likes = toy.likes
-  likeButton.addEventListener('click', updateLikes)
+  let likeBtn = document.createElement('button')
+  likeBtn.innerText = "Like <3"
+  likeBtn.dataset.id = toy.id
+  likeBtn.dataset.likes = toy.likes
+  likeBtn.addEventListener('click', updateLikes)
 
   toyCard.appendChild(toyName)
   toyCard.appendChild(toyImage)
   toyCard.appendChild(toyLikes)
-  toyCard.appendChild(likeButton)
-  toyCollection().appendChild(toyCard)
+  toyCard.appendChild(likeBtn)
+  getToyDiv().appendChild(toyCard)
 }
 
-function toyCollection() {
+function addNewToy(event) {
+  event.preventDefault();
+  let toyName = document.getElementById('toy-name').value
+  let toyImage = document.getElementById('toy-image').value
+  let data = {name: toyName, image: toyImage, likes: 0}
+  // debugger
+  renderToy(data)
+
+  fetch('http://localhost:3000/toys', {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json"
+    },
+    body: JSON.stringify(data)
+  })
+  .then(response => response.json())
+  .then(data => console.log(data))
+}
+
+function updateLikes(event) {
+  let currentLikes = parseInt(event.target.dataset.likes)
+  let toyId = event.target.dataset.id
+  let data = {likes: currentLikes + 1}
+
+  event.target.parentElement.querySelector('p').innerText = `${currentLikes + 1} Likes`
+  event.target.dataset.likes = currentLikes + 1
+
+  fetch(`http://localhost:3000/toys/${toyId}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json"
+    },
+    body: JSON.stringify(data)
+  })
+}
+
+function getToyDiv() {
   return document.querySelector('#toy-collection')
 }
 
-function getForm(){
-  return document.querySelector('form')
+function getToyForm() {
+  return document.querySelector('.add-toy-form')
 }
